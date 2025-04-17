@@ -15,6 +15,10 @@ class Player {
     int getChessCount() {
         return this.chessesCount;
     }
+
+    String getName() {
+        return this.name;
+    }
 }
 
 class Chess {

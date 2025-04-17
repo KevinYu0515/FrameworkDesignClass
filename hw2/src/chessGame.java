@@ -23,9 +23,15 @@ class ChessGame extends AbstructGame {
         generateChess();
     }
 
+    public String getWinnerName() {
+        if (!gameOver())
+            return "尚未結束";
+        return (turn == 0) ? player2.getName() : player1.getName();
+    }
+
     void start() {
         Scanner scanner = new Scanner(System.in);
-        
+
         while (gameOver() == false) {
             try {
                 showAllChess();
@@ -54,6 +60,24 @@ class ChessGame extends AbstructGame {
         }
         scanner.close();
     }
+    
+    public Chess[][] getBoard() {
+        return board.getBoard();
+    }
+
+    public String[][] getRefBoard() {
+        return board.getRefBoard();
+    }
+
+    public void revealPiece(Pair<String, String> pos) {
+        int row = pos.first.charAt(0) - 'A';
+        int col = Integer.parseInt(pos.second) - 1;
+
+        Chess piece = board.getBoard()[row][col];
+        if (piece != null && piece.name.equals("X")) {
+            piece.name = board.getRefBoard()[row][col]; // 用參考板來翻開
+        }
+    }
 
     void showAllChess() {
         System.out.println("===================================");
@@ -75,31 +99,35 @@ class ChessGame extends AbstructGame {
         return this.isGameOver;
     }
 
-    boolean move(Pair<String, String> from, Pair<String, String> to) {
+    public void nextTurn() {
+        turn = (turn + 1) % 2;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public boolean move(Pair<String, String> from, Pair<String, String> to) {
         System.out.println(from.first + from.second + " -> " + to.first + to.second);
         if (board.isValidMove(from, to)) {
             try {
                 board.makeMove(turn, from, to);
-                if (turn == 0) player2.costChessCount();
-                else player1.costChessCount();
-                turn = (turn + 1) % 2;
+                if (turn == 0)
+                    player2.costChessCount();
+                else
+                    player1.costChessCount();
                 return true;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
 
-        turn = (turn + 1) % 2;
         return false;
     }
 
     private void checkGameOver() {
         if (player1.getChessCount() == 0 || player2.getChessCount() == 0)
             isGameOver = true;
-    }
-    
-    public Chess[][] getBoard() {
-        return board.getBoardArray(); // 你要在 ChessBoard 加這個方法
     }
 
     public String getCurrentPlayerName() {
@@ -118,8 +146,12 @@ class ChessBoard {
         }
     }
 
-    public Chess[][] getBoardArray() {
+    public Chess[][] getBoard() {
         return _board;
+    }
+
+    public String[][] getRefBoard() {
+        return _refboard;
     }
 
     void printBoard() {
