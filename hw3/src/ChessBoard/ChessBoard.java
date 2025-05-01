@@ -22,6 +22,7 @@ abstract class ChessBoard extends JPanel {
     protected int[][] point; // 落棋點
     protected Rule rule;
     protected BoardMouseListener mouseListener = new BoardMouseListener();
+    protected int mode; // 模式：0 為全局 1 為暗棋
     protected int chessState; // 對局狀態 0：未開始 1：對局中 2：結束
     protected boolean isRedTurn; // 回合判斷
     protected final String[] blackChessName = { "車", "馬", "象", "士", "將", "炮", "卒" };
@@ -32,8 +33,8 @@ abstract class ChessBoard extends JPanel {
     protected int CELL_W = 60;
     protected int OFFSET_X = 40, OFFSET_Y = 40;
     protected final int PIECE_R = Chess.size / 2;
-    protected final int TOTAL_W = OFFSET_X + CELL_W * 8 + 280;
-    protected final int TOTAL_H = OFFSET_Y + CELL_W * 9 + OFFSET_Y + 80;
+    protected int TOTAL_W = OFFSET_X + CELL_W * 8 + 280;
+    protected int TOTAL_H = OFFSET_Y + CELL_W * 9 + OFFSET_Y + 80;
     protected int Mouse_RANGE_X = OFFSET_X - PIECE_R;
     protected int Mouse_RANGE_Y = OFFSET_Y - PIECE_R;
     protected int Mouse_RANGE_W = OFFSET_X + CELL_W * 8 + 2 * PIECE_R;
@@ -85,7 +86,7 @@ abstract class ChessBoard extends JPanel {
         return weight;
     }
 
-    private void initPiece() {
+    protected void initPiece() {
         for (int i = 0; i < 9; i++) {
             int nameIdx = (i < 5) ? i : (8 - i);
             piece[i] = new Chess(0, blackChessName[nameIdx], i, 0, getWeight(blackChessName[nameIdx]));
@@ -117,7 +118,7 @@ abstract class ChessBoard extends JPanel {
                 update();
             }
         }, 1000, 1000);
-        timeCnt = 30;// 定時 30s
+        timeCnt = 10;
     }
 
     protected void cancelTimer() {
@@ -194,11 +195,10 @@ abstract class ChessBoard extends JPanel {
                 int dstIdx = point[xd][yd];
                 point[xd][yd] = point[selx][sely];
                 point[selx][sely] = -1;
-                if (dstIdx == 4 || dstIdx == 20) {
-                    chessState = 2;
-                } else {
-                    isRedTurn = !isRedTurn;
-                    resetTimer();
+                isRedTurn = !isRedTurn;
+                resetTimer();
+                if (dstIdx >= 0) {
+                    piece[dstIdx].die();
                 }
             }
             validMoves.clear();

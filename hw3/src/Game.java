@@ -1,21 +1,20 @@
 package src;
 import javax.swing.*;
 
-import src.ChessBoard.FullChessBoard;
-import src.ChessBoard.HalfChessBoard;
+import src.ChessBoard.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Game {
-    public void start(String mode) {
+    public void start(ChessBoardFactory factory, String mode) {
         if ("大局模式".equals(mode)) {
             System.out.println("啟動大局模式...");
-            new FullChessBoard();
+            factory.createChessBoard();
         } else if ("暗棋模式".equals(mode)) {
             System.out.println("啟動暗棋模式...");
-            new HalfChessBoard();
+            factory.createChessBoard();
         } else {
             System.out.println("未知的遊戲模式: " + mode);
         }
@@ -37,7 +36,7 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // 關閉選擇視窗
-                start("大局模式");
+                start(new FullChessBoardFactory(), "大局模式");
             }
         });
 
@@ -45,7 +44,7 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // 關閉選擇視窗
-                start("暗棋模式");
+                start(new HalfChessBoardFactory(),"暗棋模式");
             }
         });
 

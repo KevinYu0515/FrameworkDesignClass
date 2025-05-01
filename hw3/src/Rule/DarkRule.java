@@ -17,22 +17,27 @@ public class DarkRule extends Rule {
             return false;
         }
 
-        System.out.println("xs: " + xs + ", ys: " + ys + ", xd:" + xd + ", yd:" + yd);
         int idx = this.point[xs][ys];
         this.xs = xs;
         this.ys = ys;
         this.xd = xd;
         this.yd = yd;
+        
+        if (isSameFamily()) {
+            return false;
+        }
+
+        if ("炮".equals(piece[idx].getName()) || "砲".equals(piece[idx].getName())) {
+            if (judgePao())
+                return true;
+        }
+
         if (Math.abs(xs - xd) > 1 || Math.abs(ys - yd) > 1 || (Math.abs(ys - yd) == 1 && Math.abs(xs - xd) == 1)) {
             return false;
         }
 
         if (this.point[xd][yd] == -1) {
             return true;
-        }
-
-        if (isSameFamily()) {
-            return false;
         }
 
         if (!piece[this.point[xd][yd]].isRevealed()) {
@@ -74,25 +79,22 @@ public class DarkRule extends Rule {
     }
 
     protected boolean checkWeight(int xs, int ys, int xd, int yd) {
-        System.out.println(piece[point[xs][ys]].getName() + piece[point[xd][yd]].getName());
-        if (piece[point[xs][ys]].getName() == "炮" || piece[point[xs][ys]].getName() == "砲")
+        if ("炮".equals(piece[point[xs][ys]].getName())  || "砲".equals(piece[point[xs][ys]].getName()))
             return true;
-        if ((piece[point[xs][ys]].getName() == "卒" || piece[point[xs][ys]].getName() == "兵") &&
-                (piece[point[xd][yd]].getName() == "帥" || piece[point[xd][yd]].getName() == "將")) {
+        if (("卒".equals(piece[point[xs][ys]].getName()) || "兵".equals(piece[point[xs][ys]].getName())) &&
+                ("帥".equals(piece[point[xd][yd]].getName()) || "將".equals(piece[point[xd][yd]].getName()))) {
             return true;
         }
-        if ((piece[point[xs][ys]].getName() == "帥" || piece[point[xs][ys]].getName() == "將") &&
-                (piece[point[xd][yd]].getName() == "兵" || piece[point[xd][yd]].getName() == "卒")) {
+        if (("帥".equals(piece[point[xs][ys]].getName())  || "將".equals(piece[point[xs][ys]].getName())) &&
+                ("兵".equals(piece[point[xd][yd]].getName()) || "卒".equals(piece[point[xd][yd]].getName()))) {
             return false;
         }
         return piece[point[xs][ys]].weight >= piece[point[xd][yd]].weight;
     }
 
     protected boolean judgePao() {
-        return xs == xd && checkY(xs, 0) && !hasPiece(xd, yd) && Math.abs(ys - yd) == 1
-                || xs == xd && checkY(xs, 1) && hasPiece(xd, yd) && Math.abs(ys - yd) == 1
-                || ys == yd && checkX(ys, 0) && !hasPiece(xd, yd) && Math.abs(xs - xd) == 1
-                || ys == yd && checkX(ys, 1) && hasPiece(xd, yd) && Math.abs(xs - xd) == 1;
+        return xs == xd && checkY(xs, 1) && hasPiece(xd, yd) && piece[point[xd][yd]].isRevealed()
+                || ys == yd && checkX(ys, 1) && hasPiece(xd, yd) && piece[point[xd][yd]].isRevealed();
     }
     
     protected boolean judgeJu() {

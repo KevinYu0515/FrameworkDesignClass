@@ -11,6 +11,7 @@ public class Chess {
     private Image img;
     private boolean isRevealed;
     public int weight;
+    private boolean isEaten = false;
 
     public Chess(int camp, String name, int xindex, int yindex, int weight) {
         this.camp = camp;
@@ -77,6 +78,14 @@ public class Chess {
 
     public String getName() {
         return name;
+    }
+
+    public void die() {
+        isEaten = true;
+    }
+
+    public Boolean isEaten() {
+        return isEaten;
     }
 
 }
