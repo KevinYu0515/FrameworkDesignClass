@@ -135,9 +135,8 @@ public class HalfChessBoard extends ChessBoard {
         // 繪製提示棋子落點
         g2d.setColor(new Color(0, 255, 0, 128)); // Semi-transparent green
         for (int[] move : mouseListener.validMoves) {
-            System.out.println("x: " + move[0] + ", y:" + move[1]);
-            int x = OFFSET_X + CELL_W * move[0];
-            int y = OFFSET_Y + CELL_W * move[1];
+            int x = OFFSET_X + CELL_W / 2 + CELL_W * move[0];
+            int y = OFFSET_Y + CELL_W / 2 + CELL_W * move[1];
             g2d.fillOval(x - PIECE_R / 2, y - PIECE_R / 2, PIECE_R, PIECE_R);
         }
 
@@ -187,7 +186,8 @@ public class HalfChessBoard extends ChessBoard {
     public void paintComponent(Graphics2D g2d, int i, int j) {
         g2d.setStroke(new BasicStroke(2.0f));
         g2d.setColor(Color.red);
-        int x = OFFSET_X + CELL_W * i, y = OFFSET_Y + CELL_W * j;
+        int x = OFFSET_X + CELL_W / 2 + CELL_W * i;
+        int y = OFFSET_Y + CELL_W / 2 + CELL_W * j;
         final int d1 = 15, d2 = 5;
         g2d.drawLine(x - d1, y - d2, x - d2, y - d2);
         g2d.drawLine(x - d1, y + d2, x - d2, y + d2);

@@ -55,11 +55,11 @@ public class DarkRule extends Rule {
     @Override
     public List<int[]> getValidMoves(int xs, int ys) {
         List<int[]> validMoves = new ArrayList<>();
-        for (int xd = 0; xd < 9; xd++) {
+        for (int xd = 0; xd < 8; xd++) {
             for (int yd = 0; yd < 4; yd++) {
                 if (judge(xs, ys, xd, yd)) {
                     validMoves.add(new int[] { xd, yd });
-                    System.out.println("xd: " + xd + ", yd: " + yd);
+                    System.out.println("Valid｜xd: " + xd + ", yd: " + yd);
                 }
             }
         }
