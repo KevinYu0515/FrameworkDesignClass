@@ -73,7 +73,7 @@ public class Rule {
     protected boolean checkY(int i, int cmpValue) {
         int cnt = 0;
         int m = ys, n = yd;
-        if (ys > yd) {
+        if (ys > yd){
             m = yd;
             n = ys;
         }

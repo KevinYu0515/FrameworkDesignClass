@@ -130,7 +130,7 @@ abstract class ChessBoard extends JPanel {
                 pieceIdx = idx;
 
                 validMoves.clear();
-                validMoves = rule.getValidMoves(selx, sely); 
+                validMoves = rule.getValidMoves(selx, sely);
             }
             update();
         }

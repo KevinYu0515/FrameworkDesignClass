@@ -38,8 +38,8 @@ public class HalfChessBoard extends ChessBoard {
     }
 
     protected void initVar() {
+        super.point = new int[8][4];
         super.rule = new DarkRule(point);
-        super.point = new int[9][4];
         super.boardImg = createChessBoard();
         initPoint();
     }
@@ -79,12 +79,13 @@ public class HalfChessBoard extends ChessBoard {
         }
         Collections.shuffle(indices, random);
         for (int i = 0; i < 32; i++) {
-            point[indices.get(i) % 9][indices.get(i) / 9] = i;
+            System.out.println(indices.get(i));
+            point[indices.get(i) % 8][indices.get(i) / 8] = i;
         }
     }
 
     protected Image createChessBoard() {
-        BufferedImage bimg = new BufferedImage(CELL_W * 9, CELL_W * 4, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bimg = new BufferedImage(CELL_W * 8, CELL_W * 4, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = (Graphics2D) bimg.getGraphics();
 
         g2d.setColor(Color.BLACK);
@@ -115,7 +116,7 @@ public class HalfChessBoard extends ChessBoard {
         int idx, xpos, ypos;
 
         // 畫棋子
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 4; j++) {
                 idx = point[i][j];
                 if (idx >= 0 && idx != selIdx) {
@@ -130,6 +131,7 @@ public class HalfChessBoard extends ChessBoard {
         // 繪製提示棋子落點
         g2d.setColor(new Color(0, 255, 0, 128)); // Semi-transparent green
         for (int[] move : mouseListener.validMoves) {
+            System.out.println("x: " + move[0] + ", y:" + move[1]);
             int x = OFFSET_X + CELL_W * move[0];
             int y = OFFSET_Y + CELL_W * move[1];
             g2d.fillOval(x - PIECE_R / 2, y - PIECE_R / 2, PIECE_R, PIECE_R);

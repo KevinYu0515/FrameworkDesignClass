@@ -13,7 +13,7 @@ public class DarkRule extends Rule {
             return false;
         }
 
-        System.out.println("xs: " + xs + ", ys: " + ys);
+        System.out.println("xs: " + xs + ", ys: " + ys + ", xd:" + xd + ", yd:" + yd);
         int idx = this.point[xs][ys];
         this.xs = xs;
         this.ys = ys;
@@ -58,6 +58,7 @@ public class DarkRule extends Rule {
             for (int yd = 0; yd < 4; yd++) {
                 if (judge(xs, ys, xd, yd)) {
                     validMoves.add(new int[] { xd, yd });
+                    System.out.println("xd: " + xd + ", yd: " + yd);
                 }
             }
         }
