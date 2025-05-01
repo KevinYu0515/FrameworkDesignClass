@@ -6,6 +6,6 @@ alias java="cmd.exe /c java"
 
 rm -f *.class
 
-javac Main.java
+javac src/Main.java
 
-java Main
+java src/Main
