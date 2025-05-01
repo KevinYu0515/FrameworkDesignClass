@@ -57,19 +57,47 @@ abstract class ChessBoard extends JPanel {
         initPiece();
     }
 
+    private int getWeight(String type) {
+        int weight = 0;
+        switch (type) {
+            case "車", "俥":
+                weight = 4;
+                break;
+            case "象", "相":
+                weight = 5;
+                break;
+            case "馬", "傌":
+                weight = 3;
+                break;
+            case "卒", "兵":
+                weight = 1;
+                break;
+            case "士", "仕":
+                weight = 6;
+                break;
+            case "將", "帥":
+                weight = 7;
+                break;
+            case "砲", "炮":
+                weight = 2;
+                break;
+        }
+        return weight;
+    }
+
     private void initPiece() {
         for (int i = 0; i < 9; i++) {
             int nameIdx = (i < 5) ? i : (8 - i);
-            piece[i] = new Chess(0, blackChessName[nameIdx], i, 0);
-            piece[i + 16] = new Chess(1, redChessName[nameIdx], i, 9);
+            piece[i] = new Chess(0, blackChessName[nameIdx], i, 0, getWeight(blackChessName[nameIdx]));
+            piece[i + 16] = new Chess(1, redChessName[nameIdx], i, 9, getWeight(redChessName[nameIdx]));
         }
-        piece[9] = new Chess(0, blackChessName[5], 1, 2);
-        piece[10] = new Chess(0, blackChessName[5], 7, 2);
-        piece[25] = new Chess(1, redChessName[5], 1, 7);
-        piece[26] = new Chess(1, redChessName[5], 7, 7);
+        piece[9] = new Chess(0, blackChessName[5], 1, 2, getWeight(blackChessName[5]));
+        piece[10] = new Chess(0, blackChessName[5], 7, 2, getWeight(blackChessName[5]));
+        piece[25] = new Chess(1, redChessName[5], 1, 7, getWeight(redChessName[5]));
+        piece[26] = new Chess(1, redChessName[5], 7, 7, getWeight(redChessName[5]));
         for (int i = 0; i < 5; i++) {
-            piece[11 + i] = new Chess(0, blackChessName[6], 2 * i, 3);
-            piece[27 + i] = new Chess(1, redChessName[6], 2 * i, 6);
+            piece[11 + i] = new Chess(0, blackChessName[6], 2 * i, 3, getWeight(blackChessName[6]));
+            piece[27 + i] = new Chess(1, redChessName[6], 2 * i, 6, getWeight(redChessName[6]));
         }
     }
     
@@ -115,7 +143,6 @@ abstract class ChessBoard extends JPanel {
             
             selx = posToIndex(me.getX(), Mouse_RANGE_X, Mouse_RANGE_X + Mouse_RANGE_W);
             sely = posToIndex(me.getY(), Mouse_RANGE_Y, Mouse_RANGE_Y + Mouse_RANGE_H);
-            System.out.println("selx: " + selx + ", sely: " + sely);
             if (selx == -1 || sely == -1) {
                 return;
             }
@@ -182,7 +209,6 @@ abstract class ChessBoard extends JPanel {
             if (pos < ref || pos > ref + range) {
                 return -1;
             }
-            System.out.println("pos: " + pos + ", ref: " + ref + ", range: " + range);
             int m = (pos - ref) / CELL_W;
             int r = (pos - ref) % CELL_W;
             if (r < 2 * PIECE_R) {

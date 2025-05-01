@@ -43,7 +43,7 @@ public class HalfChessBoard extends ChessBoard {
 
     protected void initVar() {
         super.point = new int[8][4];
-        super.rule = new DarkRule(point);
+        super.rule = new DarkRule(point, piece);
         super.boardImg = createChessBoard();
         initPoint();
     }
@@ -83,7 +83,6 @@ public class HalfChessBoard extends ChessBoard {
         }
         Collections.shuffle(indices, random);
         for (int i = 0; i < 32; i++) {
-            System.out.println(indices.get(i));
             point[indices.get(i) % 8][indices.get(i) / 8] = i;
         }
     }

@@ -10,13 +10,15 @@ public class Chess {
     private final int xindex, yindex;
     private Image img;
     private boolean isRevealed;
+    public int weight;
 
-    public Chess(int camp, String name, int xindex, int yindex) {
+    public Chess(int camp, String name, int xindex, int yindex, int weight) {
         this.camp = camp;
         this.name = name;
         this.xindex = xindex;
         this.yindex = yindex;
         this.img = createImage();
+        this.weight = weight;
         this.isRevealed = false;
     }
 
