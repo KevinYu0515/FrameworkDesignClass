@@ -208,21 +208,18 @@ class HalfChessBoard extends ChessBoard {
         g2d.drawLine(x + d2, y + d2, x + d2, y + d1);
     }
 
-    void checkEnd(int st) {
+    boolean checkEnd(int st) {
         for (int i = st; i < st + 16; i++) {
-            if (!piece[i].isEaten()) {
-                chessState = 1;
-                return;
-            }
-            chessState = 2;
+            if (!piece[i].isEaten()) return false;
         }
+        return true;
     }
 
     @Override
     public void update() {
         if (timeCnt > 0) {
-            checkEnd(0);
-            checkEnd(16);
+            if (checkEnd(0) || checkEnd(16))
+                chessState = 2;
         }
         if (imgbuf == null) {
             imgbuf = createImage(this.getSize().width, this.getSize().height);

@@ -1,0 +1,173 @@
+@startuml ChineseChess
+
+' 定義介面和抽象類
+interface ChessBoardFactory {
+    + createChessBoard(): ChessBoard
+}
+
+abstract class ChessBoard {
+    # piece: Chess[]
+    # point: int[][]
+    # rule: Rule
+    # mouseListener: BoardMouseListener
+    # mode: int
+    # chessState: int
+    # isRedTurn: boolean
+    # blackChessName: String[]
+    # redChessName: String[]
+    - timer: Timer
+    # timeCnt: int
+    # CELL_W: int
+    # OFFSET_X: int
+    # OFFSET_Y: int
+    # PIECE_R: int
+    # TOTAL_W: int
+    # TOTAL_H: int
+    # Mouse_RANGE_X: int
+    # Mouse_RANGE_Y: int
+    # Mouse_RANGE_W: int
+    # Mouse_RANGE_H: int
+    # boardImg: Image
+
+    # {abstract} initVar(): void
+    # {abstract} initPoint(): void
+    # {abstract} createChessBoard(): Image
+    # {abstract} paint(Graphics): void
+    # update(): void
+    # ChessBoard()
+    - getWeight(String): int
+    # initPiece(): void
+    # resetTimer(): void
+    # cancelTimer(): void
+}
+
+' 定義基本類別
+class Chess {
+    + {static} size: int
+    - camp: int
+    - name: String
+    - xindex: int
+    - yindex: int
+    - img: Image
+    - isRevealed: boolean
+    + weight: int
+    - isEaten: boolean
+    + getXindex(): int
+    + getYindex(): int
+    + getImage(): Image
+    + isRevealed(): boolean
+    + reveal(): void
+    + getName(): String
+    + die(): void
+    + isEaten(): Boolean
+}
+
+class Rule {
+    # point: int[][]
+    + Rule(int[][] point)
+    # xs, ys, xd, yd: int
+    + setJudgePoint(int[][] point): void
+    + judge(int xs, int ys, int xd, int yd): boolean
+    + getValidMoves(int xs, int ys): List<int[]>
+    # isSameFamily(): boolean
+    # hasPiece(int i, int j): boolean
+    # checkY(int i, int cmpValue): boolean
+    # checkX(int j, int cmpValue): boolean
+    # judgeJu(): boolean
+    # judgeMa(): boolean
+    # judgePao(): boolean
+    # judgeXiang(): boolean
+    # judgeShi(): boolean
+    # judgeZu(): boolean
+    # judgeBing(): boolean
+    # judgeWang(): boolean
+}
+
+class DarkRule {
+    - piece: Chess[]
+    + DarkRule(int[][] point, Chess[] piece)
+    + judge(int xs, int ys, int xd, int yd): boolean
+    + getValidMoves(int xs, int ys): List<int[]>
+    # checkWeight(int xs, int ys, int xd, int yd): boolean
+    # judgePao(): boolean
+    # judgeJu(): boolean
+    # judgeMa(): boolean
+    # judgeXiang(): boolean
+    # judgeShi(): boolean
+    # judgeZu(): boolean
+    # judgeBing(): boolean
+    # judgeWang(): boolean
+}
+
+class Game {
+    + showModeSelection(): void
+    + start(ChessBoardFactory, String): void
+}
+
+class Main {
+    + {static} main(String[]): void
+}
+
+class FullChessBoard {
+    - imgbuf: Image
+    - gbuf: Graphics
+    - startBtn: JButton
+    + FullChessBoard()
+    - initButton(): void
+    # initVar(): void
+    # initPoint(): void
+    # createChessBoard(): Image
+    + paint(Graphics): void
+    - paintTips(Graphics2D): void
+    + paintComponent(Graphics2D, int, int): void
+    + update(): void
+}
+
+class HalfChessBoard {
+    - imgbuf: Image
+    - gbuf: Graphics
+    - startBtn: JButton
+    + HalfChessBoard()
+    - initButton(): void
+    # initVar(): void
+    # initPoint(): void
+    # createChessBoard(): Image
+    + paint(Graphics): void
+    - paintTips(Graphics2D): void
+    + paintComponent(Graphics2D, int, int): void
+    + update(): void
+    - checkEnd(int): boolean
+}
+
+class FullChessBoardFactory {
+    + createChessBoard(): ChessBoard
+}
+
+class HalfChessBoardFactory {
+    + createChessBoard(): ChessBoard
+}
+
+' 關係定義
+' 組合關係（實心菱形）
+ChessBoard *-- Chess
+ChessBoard *-- Rule
+
+' 繼承關係（空心箭頭）
+DarkRule --|> Rule
+FullChessBoard --|> ChessBoard
+HalfChessBoard --|> ChessBoard
+FullChessBoardFactory ..|> ChessBoardFactory
+HalfChessBoardFactory ..|> ChessBoardFactory
+
+' 關聯關係（箭頭）
+Game --> ChessBoardFactory
+Main --> Game
+
+' 依賴關係（虛線箭頭）
+FullChessBoardFactory ..> FullChessBoard
+HalfChessBoardFactory ..> HalfChessBoard
+
+' 聚合關係（空心菱形）
+ChessBoard o-- "1" Rule
+
+@enduml

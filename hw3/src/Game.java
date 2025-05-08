@@ -11,13 +11,12 @@ public class Game {
     public void start(ChessBoardFactory factory, String mode) {
         if ("大局模式".equals(mode)) {
             System.out.println("啟動大局模式...");
-            factory.createChessBoard();
         } else if ("暗棋模式".equals(mode)) {
             System.out.println("啟動暗棋模式...");
-            factory.createChessBoard();
         } else {
             System.out.println("未知的遊戲模式: " + mode);
         }
+        factory.createChessBoard();
     }
 
     public void showModeSelection() {
